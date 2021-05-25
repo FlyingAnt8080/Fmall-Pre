@@ -15,10 +15,20 @@
         <el-input v-model="dataForm.name" placeholder="场次名称"></el-input>
       </el-form-item>
       <el-form-item label="每日开始时间" prop="startTime">
-        <el-date-picker type="datetime" placeholder="每日开始时间" v-model="dataForm.startTime"></el-date-picker>
+        <el-date-picker
+          type="datetime"
+          placeholder="每日开始时间"
+          v-model="dataForm.startTime"
+          value-format="yyyy-MM-dd HH:mm:ss"
+        ></el-date-picker>
       </el-form-item>
       <el-form-item label="每日结束时间" prop="endTime">
-        <el-date-picker type="datetime" placeholder="每日结束时间" v-model="dataForm.endTime"></el-date-picker>
+        <el-date-picker
+          type="datetime"
+          placeholder="每日结束时间"
+          v-model="dataForm.endTime"
+          value-format="yyyy-MM-dd HH:mm:ss"
+        ></el-date-picker>
       </el-form-item>
       <el-form-item label="启用状态" prop="status">
         <el-input v-model="dataForm.status" placeholder="启用状态"></el-input>
@@ -42,22 +52,22 @@ export default {
         startTime: "",
         endTime: "",
         status: "",
-        createTime: ""
+        createTime: "",
       },
       dataRule: {
         name: [
-          { required: true, message: "场次名称不能为空", trigger: "blur" }
+          { required: true, message: "场次名称不能为空", trigger: "blur" },
         ],
         startTime: [
-          { required: true, message: "每日开始时间不能为空", trigger: "blur" }
+          { required: true, message: "每日开始时间不能为空", trigger: "blur" },
         ],
         endTime: [
-          { required: true, message: "每日结束时间不能为空", trigger: "blur" }
+          { required: true, message: "每日结束时间不能为空", trigger: "blur" },
         ],
         status: [
-          { required: true, message: "启用状态不能为空", trigger: "blur" }
-        ]
-      }
+          { required: true, message: "启用状态不能为空", trigger: "blur" },
+        ],
+      },
     };
   },
   methods: {
@@ -72,7 +82,7 @@ export default {
               `/coupon/seckillsession/info/${this.dataForm.id}`
             ),
             method: "get",
-            params: this.$http.adornParams()
+            params: this.$http.adornParams(),
           }).then(({ data }) => {
             if (data && data.code === 0) {
               this.dataForm.name = data.seckillSession.name;
@@ -87,7 +97,7 @@ export default {
     },
     // 表单提交
     dataFormSubmit() {
-      this.$refs["dataForm"].validate(valid => {
+      this.$refs["dataForm"].validate((valid) => {
         if (valid) {
           this.$http({
             url: this.$http.adornUrl(
@@ -100,8 +110,8 @@ export default {
               startTime: this.dataForm.startTime,
               endTime: this.dataForm.endTime,
               status: this.dataForm.status,
-              createTime: new Date()
-            })
+              createTime: null,
+            }),
           }).then(({ data }) => {
             if (data && data.code === 0) {
               this.$message({
@@ -111,7 +121,7 @@ export default {
                 onClose: () => {
                   this.visible = false;
                   this.$emit("refreshDataList");
-                }
+                },
               });
             } else {
               this.$message.error(data.msg);
@@ -119,7 +129,7 @@ export default {
           });
         }
       });
-    }
-  }
+    },
+  },
 };
 </script>

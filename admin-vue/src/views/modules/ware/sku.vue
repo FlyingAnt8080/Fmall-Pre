@@ -1,23 +1,47 @@
 <template>
   <div class="mod-config">
-    <el-form :inline="true" :model="dataForm" @keyup.enter.native="getDataList()">
+    <el-form
+      :inline="true"
+      :model="dataForm"
+      @keyup.enter.native="getDataList()"
+    >
       <el-form-item label="仓库">
-        <el-select style="width:160px;" v-model="dataForm.wareId" placeholder="请选择仓库" clearable>
-          <el-option :label="w.name" :value="w.id" v-for="w in wareList" :key="w.id"></el-option>
+        <el-select
+          style="width: 160px"
+          v-model="dataForm.wareId"
+          placeholder="请选择仓库"
+          clearable
+        >
+          <el-option
+            :label="w.name"
+            :value="w.id"
+            v-for="w in wareList"
+            :key="w.id"
+          ></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="skuId">
-        <el-input v-model="dataForm.skuId" placeholder="skuId" clearable></el-input>
+      <el-form-item label="商品ID">
+        <el-input
+          v-model="dataForm.skuId"
+          placeholder="商品ID"
+          clearable
+        ></el-input>
       </el-form-item>
       <el-form-item>
         <el-button @click="getDataList()">查询</el-button>
-        <el-button v-if="isAuth('ware:waresku:save')" type="primary" @click="addOrUpdateHandle()">新增</el-button>
+        <el-button
+          v-if="isAuth('ware:waresku:save')"
+          type="primary"
+          @click="addOrUpdateHandle()"
+          >新增</el-button
+        >
         <el-button
           v-if="isAuth('ware:waresku:delete')"
           type="danger"
           @click="deleteHandle()"
           :disabled="dataListSelections.length <= 0"
-        >批量删除</el-button>
+          >批量删除</el-button
+        >
       </el-form-item>
     </el-form>
     <el-table
@@ -25,19 +49,74 @@
       border
       v-loading="dataListLoading"
       @selection-change="selectionChangeHandle"
-      style="width: 100%;"
+      style="width: 100%"
     >
-      <el-table-column type="selection" header-align="center" align="center" width="50"></el-table-column>
-      <el-table-column prop="id" header-align="center" align="center" label="id"></el-table-column>
-      <el-table-column prop="skuId" header-align="center" align="center" label="sku_id"></el-table-column>
-      <el-table-column prop="wareId" header-align="center" align="center" label="仓库id"></el-table-column>
-      <el-table-column prop="stock" header-align="center" align="center" label="库存数"></el-table-column>
-      <el-table-column prop="skuName" header-align="center" align="center" label="sku_name"></el-table-column>
-      <el-table-column prop="stockLocked" header-align="center" align="center" label="锁定库存"></el-table-column>
-      <el-table-column fixed="right" header-align="center" align="center" width="150" label="操作">
+      <el-table-column
+        type="selection"
+        header-align="center"
+        align="center"
+        width="50"
+      ></el-table-column>
+      <el-table-column
+        width="80"
+        prop="id"
+        header-align="center"
+        align="center"
+        label="id"
+      ></el-table-column>
+      <el-table-column
+        width="80"
+        prop="skuId"
+        header-align="center"
+        align="center"
+        label="商品ID"
+      ></el-table-column>
+      <el-table-column
+        width="80"
+        prop="wareId"
+        header-align="center"
+        align="center"
+        label="仓库ID"
+      ></el-table-column>
+      <el-table-column
+        width="160"
+        prop="stock"
+        header-align="center"
+        align="center"
+        label="库存数"
+      ></el-table-column>
+      <el-table-column
+        prop="skuName"
+        header-align="center"
+        align="center"
+        label="商品名称"
+      ></el-table-column>
+      <el-table-column
+        width="80"
+        prop="stockLocked"
+        header-align="center"
+        align="center"
+        label="锁定库存"
+      ></el-table-column>
+      <el-table-column
+        header-align="center"
+        align="center"
+        width="150"
+        label="操作"
+      >
         <template slot-scope="scope">
-          <el-button type="text" size="small" @click="addOrUpdateHandle(scope.row.id)">修改</el-button>
-          <el-button type="text" size="small" @click="deleteHandle(scope.row.id)">删除</el-button>
+          <el-button
+            type="text"
+            size="small"
+            @click="addOrUpdateHandle(scope.row.id)"
+            >修改</el-button
+          >
+          <el-button
+            type="text"
+            size="small"
+            @click="deleteHandle(scope.row.id)"
+            >删除</el-button
+          >
         </template>
       </el-table-column>
     </el-table>
@@ -51,7 +130,11 @@
       layout="total, sizes, prev, pager, next, jumper"
     ></el-pagination>
     <!-- 弹窗, 新增 / 修改 -->
-    <add-or-update v-if="addOrUpdateVisible" ref="addOrUpdate" @refreshDataList="getDataList"></add-or-update>
+    <add-or-update
+      v-if="addOrUpdateVisible"
+      ref="addOrUpdate"
+      @refreshDataList="getDataList"
+    ></add-or-update>
   </div>
 </template>
 
@@ -62,8 +145,8 @@ export default {
     return {
       wareList: [],
       dataForm: {
-        wareId: "",
-        skuId: ""
+        wareId: null,
+        skuId: null,
       },
       dataList: [],
       pageIndex: 1,
@@ -71,11 +154,11 @@ export default {
       totalPage: 0,
       dataListLoading: false,
       dataListSelections: [],
-      addOrUpdateVisible: false
+      addOrUpdateVisible: false,
     };
   },
   components: {
-    AddOrUpdate
+    AddOrUpdate,
   },
   activated() {
     console.log("接收到", this.$route.query.skuId);
@@ -92,8 +175,8 @@ export default {
         method: "get",
         params: this.$http.adornParams({
           page: 1,
-          limit: 500
-        })
+          limit: 500,
+        }),
       }).then(({ data }) => {
         this.wareList = data.page.list;
       });
@@ -108,8 +191,8 @@ export default {
           page: this.pageIndex,
           limit: this.pageSize,
           skuId: this.dataForm.skuId,
-          wareId: this.dataForm.wareId
-        })
+          wareId: this.dataForm.wareId,
+        }),
       }).then(({ data }) => {
         if (data && data.code === 0) {
           this.dataList = data.page.list;
@@ -147,7 +230,7 @@ export default {
     deleteHandle(id) {
       var ids = id
         ? [id]
-        : this.dataListSelections.map(item => {
+        : this.dataListSelections.map((item) => {
             return item.id;
           });
       this.$confirm(
@@ -156,13 +239,13 @@ export default {
         {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
-          type: "warning"
+          type: "warning",
         }
       ).then(() => {
         this.$http({
           url: this.$http.adornUrl("/ware/waresku/delete"),
           method: "post",
-          data: this.$http.adornData(ids, false)
+          data: this.$http.adornData(ids, false),
         }).then(({ data }) => {
           if (data && data.code === 0) {
             this.$message({
@@ -171,14 +254,14 @@ export default {
               duration: 1500,
               onClose: () => {
                 this.getDataList();
-              }
+              },
             });
           } else {
             this.$message.error(data.msg);
           }
         });
       });
-    }
-  }
+    },
+  },
 };
 </script>

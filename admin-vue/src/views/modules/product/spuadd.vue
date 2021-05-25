@@ -38,16 +38,16 @@
                 :step="0.1"
               ></el-input-number>
             </el-form-item>
-            <el-form-item label="设置积分" prop="bounds">
-              <label>金币</label>
+            <el-form-item label="成长值" prop="bounds">
+              <!-- <label>金币</label>
               <el-input-number
                 style="width: 130px"
                 placeholder="金币"
                 v-model="spu.bounds.buyBounds"
                 :min="0"
                 controls-position="right"
-              ></el-input-number>
-              <label style="margin-left: 15px">成长值</label>
+              ></el-input-number> -->
+              <!-- <label style="margin-left: 15px">成长值</label> -->
               <el-input-number
                 style="width: 130px"
                 placeholder="成长值"

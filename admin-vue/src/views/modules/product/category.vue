@@ -40,10 +40,10 @@
             size="mini"
             @click="() => append(data)"
           >
-            Append
+            添加
           </el-button>
           <el-button type="text" size="mini" @click="() => edit(data)">
-            Edit
+            修改
           </el-button>
           <el-button
             v-if="node.childNodes.length == 0"
@@ -51,7 +51,7 @@
             size="mini"
             @click="() => remove(node, data)"
           >
-            Delete
+            删除
           </el-button>
         </span>
       </span>
@@ -129,11 +129,6 @@ export default {
       });
     },
     append(data) {
-      this.dialogType = "add";
-      this.title = "添加分类";
-      this.dialogVisible = true;
-      this.category.parentCid = data.catId;
-      this.category.catLevel = data.catLevel * 1 + 1;
       this.category = {
         name: "",
         parentCid: 0,
@@ -144,6 +139,11 @@ export default {
         icon: "",
         productUnit: "",
       };
+      this.dialogType = "add";
+      this.title = "添加分类";
+      this.dialogVisible = true;
+      this.category.parentCid = data.catId;
+      this.category.catLevel = data.catLevel * 1 + 1;
     },
     edit(data) {
       this.title = "修改分类";

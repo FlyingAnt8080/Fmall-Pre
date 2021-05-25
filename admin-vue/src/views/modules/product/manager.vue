@@ -74,6 +74,7 @@
         header-align="center"
         align="center"
         label="skuId"
+        width="80"
       ></el-table-column>
       <el-table-column
         prop="skuName"
@@ -114,18 +115,18 @@
         label="操作"
       >
         <template slot-scope="scope">
-          <el-button
+          <!--  <el-button
             type="text"
             size="small"
             @click="previewHandle(scope.row.skuId)"
             >预览</el-button
-          >
-          <el-button
+          > -->
+          <!-- <el-button
             type="text"
             size="small"
             @click="commentHandle(scope.row.skuId)"
             >评论</el-button
-          >
+          > -->
           <el-dropdown
             @command="handleCommand(scope.row, $event)"
             size="small"
@@ -134,27 +135,27 @@
           >
             更多
             <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item command="uploadImages"
+              <!--  <el-dropdown-item command="uploadImages"
                 >上传图片</el-dropdown-item
-              >
-              <el-dropdown-item command="seckillSettings"
+              > -->
+              <!-- <el-dropdown-item command="seckillSettings"
                 >参与秒杀</el-dropdown-item
-              >
-              <el-dropdown-item command="reductionSettings"
+              > -->
+              <!--  <el-dropdown-item command="reductionSettings"
                 >满减设置</el-dropdown-item
-              >
-              <el-dropdown-item command="discountSettings"
+              > -->
+              <!-- <el-dropdown-item command="discountSettings"
                 >折扣设置</el-dropdown-item
-              >
-              <el-dropdown-item command="memberPriceSettings"
+              > -->
+              <!--  <el-dropdown-item command="memberPriceSettings"
                 >会员价格</el-dropdown-item
-              >
+              > -->
               <el-dropdown-item command="stockSettings"
                 >库存管理</el-dropdown-item
               >
-              <el-dropdown-item command="couponSettings"
+              <!--  <el-dropdown-item command="couponSettings"
                 >优惠劵</el-dropdown-item
-              >
+              > -->
             </el-dropdown-menu>
           </el-dropdown>
         </template>
@@ -219,6 +220,7 @@ export default {
       }
     },
     searchSkuInfo() {
+      this.pageIndex = 1;
       this.getDataList();
     },
     // 获取数据列表

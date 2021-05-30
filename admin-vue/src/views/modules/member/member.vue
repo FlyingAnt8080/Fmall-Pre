@@ -20,13 +20,13 @@
           @click="addOrUpdateHandle()"
           >新增</el-button
         > -->
-        <!--  <el-button
+        <el-button
           v-if="isAuth('member:member:delete')"
           type="danger"
           @click="deleteHandle()"
           :disabled="dataListSelections.length <= 0"
           >批量删除</el-button
-        > -->
+        >
       </el-form-item>
     </el-form>
     <el-table
@@ -36,12 +36,12 @@
       @selection-change="selectionChangeHandle"
       style="width: 100%"
     >
-      <!-- <el-table-column
+      <el-table-column
         type="selection"
         header-align="center"
         align="center"
         width="50"
-      ></el-table-column> -->
+      ></el-table-column>
       <el-table-column
         prop="id"
         header-align="center"
@@ -161,7 +161,7 @@
         label="注册时间"
       >
       </el-table-column>
-      <!--  <el-table-column
+      <el-table-column
         fixed="right"
         header-align="center"
         align="center"
@@ -169,9 +169,14 @@
         label="操作"
       >
         <template slot-scope="scope">
-          <el-button type="text" size="small">删除</el-button>
+          <el-button
+            type="text"
+            size="small"
+            @click="deleteHandle(scope.row.id)"
+            >删除</el-button
+          >
         </template>
-      </el-table-column> -->
+      </el-table-column>
     </el-table>
     <el-pagination
       @size-change="sizeChangeHandle"
@@ -274,36 +279,42 @@ export default {
         this.$refs.addOrUpdate.init(id);
       });
     },
-    // 删除
-    //   deleteHandle (id) {
-    //     var ids = id ? [id] : this.dataListSelections.map(item => {
-    //       return item.id
-    //     })
-    //     this.$confirm(`确定对[id=${ids.join(',')}]进行[${id ? '删除' : '批量删除'}]操作?`, '提示', {
-    //       confirmButtonText: '确定',
-    //       cancelButtonText: '取消',
-    //       type: 'warning'
-    //     }).then(() => {
-    //       this.$http({
-    //         url: this.$http.adornUrl('/member/member/delete'),
-    //         method: 'post',
-    //         data: this.$http.adornData(ids, false)
-    //       }).then(({data}) => {
-    //         if (data && data.code === 0) {
-    //           this.$message({
-    //             message: '操作成功',
-    //             type: 'success',
-    //             duration: 1500,
-    //             onClose: () => {
-    //               this.getDataList()
-    //             }
-    //           })
-    //         } else {
-    //           this.$message.error(data.msg)
-    //         }
-    //       })
-    //     })
-    //   }
+    //删除
+    deleteHandle(id) {
+      var ids = id
+        ? [id]
+        : this.dataListSelections.map((item) => {
+            return item.id;
+          });
+      this.$confirm(
+        `确定对[id=${ids.join(",")}]进行[${id ? "删除" : "批量删除"}]操作?`,
+        "提示",
+        {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning",
+        }
+      ).then(() => {
+        this.$http({
+          url: this.$http.adornUrl("/member/member/delete"),
+          method: "post",
+          data: this.$http.adornData(ids, false),
+        }).then(({ data }) => {
+          if (data && data.code === 0) {
+            this.$message({
+              message: "操作成功",
+              type: "success",
+              duration: 1500,
+              onClose: () => {
+                this.getDataList();
+              },
+            });
+          } else {
+            this.$message.error(data.msg);
+          }
+        });
+      });
+    },
   },
 };
 </script>
